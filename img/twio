@@ -1,0 +1,3676 @@
+Dataclass Reference
+ActiveExtension
+class twitchio.ActiveExtension(data)
+Attributes
+active
+id
+name
+version
+x
+y
+Represents an active extension for a specified user
+
+id
+ID of the extension.
+
+TYPE
+str
+
+version
+Version of the extension.
+
+TYPE
+str
+
+active
+Activation state of the extension.
+
+TYPE
+bool
+
+name
+Name of the extension.
+
+TYPE
+str
+
+x
+(Video-component Extensions only) X-coordinate of the placement of the extension. Could be None.
+
+TYPE
+int
+
+y
+(Video-component Extensions only) Y-coordinate of the placement of the extension. Could be None.
+
+TYPE
+int
+
+AutomodCheckMessage
+class twitchio.AutomodCheckMessage(id: str, text: str, user: Union[PartialUser, int])
+Attributes
+id
+text
+user_id
+Represents the message to check with automod
+
+id
+Developer-generated identifier for mapping messages to results.
+
+TYPE
+str
+
+text
+Message text.
+
+TYPE
+str
+
+user_id
+User ID of the sender.
+
+TYPE
+int
+
+AutomodCheckResponse
+class twitchio.AutomodCheckResponse(data: dict)
+Attributes
+id
+permitted
+Represents the response to a message check with automod
+
+id
+The message ID passed in the body of the check
+
+TYPE
+str
+
+permitted
+Indicates if this message meets AutoMod requirements.
+
+TYPE
+bool
+
+Ban
+class twitchio.Ban(http: TwitchHTTP, data: dict)
+Attributes
+broadcaster
+created_at
+moderator
+user
+Represents a ban for a broadcaster / channel
+
+broadcaster
+The broadcaster whose chat room the user was banned from chatting in.
+
+TYPE
+PartialUser
+
+moderator
+The moderator that banned the user.
+
+TYPE
+PartialUser
+
+user
+The user that was banned.
+
+TYPE
+PartialUser
+
+created_at
+Date and time of when the ban was created.
+
+TYPE
+datetime.datetime
+
+BanEvent
+class twitchio.BanEvent(http: TwitchHTTP, data: dict, broadcaster: Optional[Union[PartialUser, User]])
+Attributes
+broadcaster
+expires_at
+id
+moderator
+reason
+timestamp
+type
+user
+version
+This has been deprecated.
+
+Represents a user being banned from a channel.
+
+id
+The event ID.
+
+TYPE
+str
+
+type
+Type of ban event. Either moderation.user.ban or moderation.user.unban.
+
+TYPE
+str
+
+timestamp
+The time the action occurred at.
+
+TYPE
+datetime.datetime
+
+version
+The version of the endpoint.
+
+TYPE
+float
+
+broadcaster
+The user whose channel the ban/unban occurred on.
+
+TYPE
+PartialUser
+
+user
+The user who was banned/unbanned.
+
+TYPE
+PartialUser
+
+moderator
+The user who performed the action.
+
+TYPE
+PartialUser
+
+expires_at
+When the ban expires.
+
+TYPE
+Optional[datetime.datetime]
+
+reason
+The reason the moderator banned/unbanned the user.
+
+TYPE
+str
+
+BitLeaderboardUser
+class twitchio.BitLeaderboardUser(http: TwitchHTTP, data: dict)
+BitsLeaderboard
+class twitchio.BitsLeaderboard(http: TwitchHTTP, data: dict)
+Attributes
+ended_at
+leaders
+started_at
+Represents a Bits leaderboard from the twitch API.
+
+started_at
+The time the leaderboard started.
+
+TYPE
+Optional[datetime.datetime]
+
+ended_at
+The time the leaderboard ended.
+
+TYPE
+Optional[datetime.datetime]
+
+leaders
+The current leaders of the Leaderboard.
+
+TYPE
+List[BitLeaderboardUser]
+
+Channel
+class twitchio.Channel(name: str, websocket: WSConnection)
+Attributes
+chatters
+name
+Methods
+asyncfetch_bits_leaderboard
+defget_chatter
+asyncsend
+asyncuser
+asyncwhisper
+coroutine fetch_bits_leaderboard(token: str, period: str = 'all', user_id: Optional[int] = None, started_at: Optional[datetime] = None) → BitsLeaderboard
+This function is a coroutine.
+
+Fetches the bits leaderboard for the channel. This requires an OAuth token with the bits:read scope.
+
+PARAMETERS
+token (str) – the OAuth token with the bits:read scope
+
+period (Optional[str]) – one of day, week, month, year, or all, defaults to all
+
+started_at (Optional[datetime.datetime]) – the timestamp to start the period at. This is ignored if the period is all
+
+user_id (Optional[int]) – the id of the user to fetch for
+
+get_chatter(name: str) → Optional[Union[Chatter, PartialChatter]]
+Retrieve a chatter from the channels user cache.
+
+PARAMETERS
+name (str) – The chatter’s name to try and retrieve.
+
+RETURNS
+Union[twitchio.chatter.Chatter, twitchio.chatter.PartialChatter] – Could be a twitchio.user.PartialChatter depending on how the user joined the channel. Returns None if no user was found.
+
+coroutine send(content: str)
+This function is a coroutine.
+
+Send a message to the destination associated with the dataclass.
+
+Destination will either be a channel or user.
+
+PARAMETERS
+content (str) – The content you wish to send as a message. The content must be a string.
+
+RAISES
+InvalidContent – Invalid content.
+
+coroutine user(force=False) → User
+This function is a coroutine.
+
+Fetches the User from the api.
+
+PARAMETERS
+force (bool) – Whether to force a fetch from the api, or try and pull from the cache. Defaults to False
+
+RETURNS
+twitchio.User the user associated with the channel
+
+coroutine whisper(content: str)
+This function is a coroutine.
+
+Whispers the user behind the channel. This will not work if the channel is the same as the one you are sending the message from.
+
+PARAMETERS
+content (str) – The content to send to the user
+
+property chatters: Optional[Set[Union[Chatter, PartialChatter]]]
+The channels current chatters.
+
+property name: str
+The channel name.
+
+ChannelEmote
+class twitchio.ChannelEmote(http: TwitchHTTP, data: dict)
+Attributes
+format
+id
+images
+name
+scale
+set_id
+theme_mode
+tier
+type
+Represents a Channel Emote
+
+id
+The ID of the emote.
+
+TYPE
+str
+
+name
+The name of the emote.
+
+TYPE
+str
+
+images
+Contains the image URLs for the emote. These image URLs will always provide a static (i.e., non-animated) emote image with a light background.
+
+TYPE
+dict
+
+tier
+The subscriber tier at which the emote is unlocked.
+
+TYPE
+str
+
+type
+The type of emote.
+
+TYPE
+str
+
+set_id
+An ID that identifies the emote set that the emote belongs to.
+
+TYPE
+str
+
+format
+The formats that the emote is available in.
+
+TYPE
+List[str]
+
+scale
+The sizes that the emote is available in.
+
+TYPE
+List[str]
+
+theme_mode
+The background themes that the emote is available in.
+
+TYPE
+List[str]
+
+ChannelInfo
+class twitchio.ChannelInfo(http: TwitchHTTP, data: dict)
+Attributes
+delay
+game_id
+game_name
+language
+tags
+title
+user
+Represents a channel’s current information
+
+user
+The user whose channel information was requested.
+
+TYPE
+PartialUser
+
+game_id
+Current game ID being played on the channel.
+
+TYPE
+int
+
+game_name
+Name of the game being played on the channel.
+
+TYPE
+str
+
+title
+Title of the stream.
+
+TYPE
+str
+
+language
+Language of the channel.
+
+TYPE
+str
+
+delay
+Stream delay in seconds. This defaults to 0 if the broadcaster_id does not match the user access token.
+
+TYPE
+int
+
+tags
+The tags applied to the channel.
+
+TYPE
+List[str]
+
+ChannelTeams
+class twitchio.ChannelTeams(http: TwitchHTTP, data: dict)
+Attributes
+background_image_url
+banner
+broadcaster
+created_at
+id
+info
+team_display_name
+team_name
+thumbnail_url
+updated_at
+Represents the Twitch Teams of which the specified channel/broadcaster is a member
+
+broadcaster
+User of the broadcaster.
+
+TYPE
+PartialUser
+
+background_image_url
+URL for the Team background image.
+
+TYPE
+str
+
+banner
+URL for the Team banner.
+
+TYPE
+str
+
+created_at
+Date and time the Team was created.
+
+TYPE
+datetime.datetime
+
+updated_at
+Date and time the Team was last updated.
+
+TYPE
+datetime.datetime
+
+info
+Team description.
+
+TYPE
+str
+
+thumbnail_url
+Image URL for the Team logo.
+
+TYPE
+str
+
+team_name
+Team name.
+
+TYPE
+str
+
+team_display_name
+Team display name.
+
+TYPE
+str
+
+id
+Team ID.
+
+TYPE
+str
+
+ChatBadge
+class twitchio.ChatBadge(data: dict)
+Attributes
+set_id
+versions
+Represents chat badges.
+
+set_id
+An ID that identifies this set of chat badges. For example, Bits or Subscriber.
+
+TYPE
+str
+
+versions
+The list of chat badges in this set.
+
+TYPE
+List[ChatBadgeVersions]
+
+ChatBadgeVersions
+class twitchio.ChatBadgeVersions(data: dict)
+Attributes
+click_action
+click_url
+description
+id
+image_url_1x
+image_url_2x
+image_url_4x
+title
+Represents the different versions of the chat badge.
+
+id
+An ID that identifies this version of the badge. The ID can be any value.
+
+TYPE
+str
+
+image_url_1x
+URL to the small version (18px x 18px) of the badge.
+
+TYPE
+str
+
+image_url_2x
+URL to the medium version (36px x 36px) of the badge.
+
+TYPE
+str
+
+image_url_4x
+URL to the large version (72px x 72px) of the badge.
+
+TYPE
+str
+
+title
+The title of the badge.
+
+TYPE
+str
+
+description
+The description of the badge.
+
+TYPE
+str
+
+click_action
+The action to take when clicking on the badge. This can be None if no action is specified
+
+TYPE
+Optional[str]
+
+click_url
+The URL to navigate to when clicking on the badge. This can be None if no URL is specified.
+
+TYPE
+Optional[str]
+
+ChatSettings
+class twitchio.ChatSettings(http: TwitchHTTP, data: dict)
+Attributes
+broadcaster
+emote_mode
+follower_mode
+follower_mode_duration
+moderator
+non_moderator_chat_delay
+non_moderator_chat_delay_duration
+slow_mode
+slow_mode_wait_time
+subscriber_mode
+unique_chat_mode
+Represents current chat settings of a broadcaster / channel
+
+broadcaster
+User of the broadcaster. Only returns the ID.
+
+TYPE
+PartialUser
+
+emote_mode
+Indicates whether emote only mode is enabled.
+
+TYPE
+bool
+
+follower_mode
+Indicates whether follower only chat is enabled.
+
+TYPE
+bool
+
+follower_mode_duration
+The length of time, in minutes, that the followers must have followed the broadcaster to participate in chat.
+
+TYPE
+Optional[int]
+
+slow_mode
+Indicates whether the chat is in slow mode.
+
+TYPE
+bool
+
+slow_mode_wait_time
+The amount of time, in seconds, that users need to wait between sending messages.
+
+TYPE
+Optional[int]
+
+subscriber_mode
+Indicates whether only users that subscribe to the broadcaster’s channel can talk in chat.
+
+TYPE
+bool
+
+unique_chat_mode
+Indicates whether the broadcaster requires users to post only unique messages in the chat room.
+
+TYPE
+bool
+
+moderator
+The User of the moderator, if provided. Only returns the ID.
+
+TYPE
+Optional[PartialUser]
+
+non_moderator_chat_delay
+Indicates whether the broadcaster adds a short delay before chat messages appear in the chat room.
+
+TYPE
+Optional[bool]
+
+non_moderator_chat_delay_duration
+The amount of time, in seconds, that messages are delayed from appearing in chat.
+
+TYPE
+Optional[int]
+
+Chatter
+class twitchio.PartialChatter(websocket, **kwargs)
+Attributes
+channel
+name
+Methods
+asyncsend
+asyncuser
+coroutine send(content: str)
+This function is a coroutine.
+
+Send a message to the destination associated with the dataclass.
+
+Destination will either be a channel or user.
+
+PARAMETERS
+content (str) – The content you wish to send as a message. The content must be a string.
+
+RAISES
+InvalidContent – Invalid content.
+
+coroutine user() → User
+This function is a coroutine.
+
+Fetches a twitchio.User object based off the chatters channel name
+
+RETURNS
+twitchio.User
+
+property channel
+The channel associated with the user.
+
+property name
+The users name
+
+class twitchio.Chatter(websocket: WSConnection, **kwargs)
+Attributes
+badges
+color
+colour
+display_name
+id
+is_broadcaster
+is_mod
+is_subscriber
+is_turbo
+is_vip
+mention
+name
+prediction
+property badges: dict
+The users badges.
+
+property color: str
+The users color.
+
+property colour: str
+The users colour. Alias to color.
+
+property display_name: Optional[str]
+The user’s display name.
+
+property id: Optional[str]
+The user’s id.
+
+property is_broadcaster: bool
+A boolean indicating whether the User is the broadcaster of the current channel.
+
+property is_mod: bool
+A boolean indicating whether the User is a moderator of the current channel.
+
+property is_subscriber: bool
+A boolean indicating whether the User is a subscriber of the current channel.
+
+Note
+
+changed in 2.1.0: return value is no longer optional. founders will now appear as subscribers
+
+property is_turbo: Optional[bool]
+A boolean indicating whether the User is Turbo.
+
+Could be None if no Tags were received.
+
+property is_vip: bool
+A boolean indicating whether the User is a VIP of the current channel.
+
+property mention: str
+Mentions the users display name by prefixing it with ‘@’
+
+property name: str
+The users name. This may be formatted differently than display name.
+
+property prediction: Optional[PredictionEnum]
+The users current prediction, if one exists.
+
+RETURNS
+Optional[twitchio.enums.PredictionEnum]
+
+ChatterColor
+class twitchio.ChatterColor(http: TwitchHTTP, data: dict)
+Attributes
+color
+user
+Represents chatters current name color.
+
+user
+PartialUser of the chatter.
+
+TYPE
+PartialUser
+
+color
+The color of the chatter’s name.
+
+TYPE
+str
+
+CheerEmote
+class twitchio.CheerEmote(http: TwitchHTTP, data: dict)
+Attributes
+charitable
+order
+prefix
+tiers
+type
+Represents a Cheer Emote
+
+prefix
+The string used to Cheer that precedes the Bits amount.
+
+TYPE
+str
+
+tiers
+The tiers this Cheer Emote has
+
+TYPE
+CheerEmoteTier
+
+type
+Shows whether the emote is global_first_party, global_third_party, channel_custom, display_only, or sponsored.
+
+TYPE
+str
+
+order
+Order of the emotes as shown in the bits card, in ascending order.
+
+TYPE
+str
+
+last_updated :class:`datetime.datetime`
+The date this cheermote was last updated.
+
+charitable
+Indicates whether this emote provides a charity contribution match during charity campaigns.
+
+TYPE
+bool
+
+CheerEmoteTier
+class twitchio.CheerEmoteTier(data: dict)
+Attributes
+can_cheer
+colour
+id
+images
+min_bits
+show_in_bits_card
+Represents a Cheer Emote tier.
+
+min_bits
+The minimum bits for the tier
+
+TYPE
+int
+
+id
+The ID of the tier
+
+TYPE
+str
+
+colour
+The colour of the tier
+
+TYPE
+str
+
+images
+contains two dicts, light and dark. Each item will have an animated and static item, which will contain yet another dict, with sizes 1, 1.5, 2, 3, and 4. Ex. cheeremotetier.images["light"]["animated"]["1"]
+
+TYPE
+dict
+
+can_cheer
+Indicates whether emote information is accessible to users.
+
+TYPE
+bool
+
+show_in_bits_card
+Indicates whether twitch hides the emote from the bits card.
+
+TYPE
+:class`bool`
+
+Clip
+class twitchio.Clip(http: TwitchHTTP, data: dict)
+Attributes
+broadcaster
+created_at
+creator
+duration
+embed_url
+game_id
+id
+language
+thumbnail_url
+title
+url
+video_id
+views
+vod_offset
+Represents a Twitch Clip
+
+id
+The ID of the clip.
+
+TYPE
+str
+
+url
+The URL of the clip.
+
+TYPE
+str
+
+embed_url
+The URL to embed the clip with.
+
+TYPE
+str
+
+broadcaster
+The user whose channel the clip was created on.
+
+TYPE
+PartialUser
+
+creator
+The user who created the clip.
+
+TYPE
+PartialUser
+
+video_id
+The ID of the video the clip is sourced from.
+
+TYPE
+str
+
+game_id
+The ID of the game that was being played when the clip was created.
+
+TYPE
+str
+
+language
+The language, in an ISO 639-1 format, of the stream when the clip was created.
+
+TYPE
+str
+
+title
+The title of the clip.
+
+TYPE
+str
+
+views
+The amount of views this clip has.
+
+TYPE
+int
+
+created_at
+When the clip was created.
+
+TYPE
+datetime.datetime
+
+thumbnail_url
+The url of the clip thumbnail.
+
+TYPE
+str
+
+duration
+Duration of the Clip in seconds (up to 0.1 precision).
+
+TYPE
+float
+
+vod_offset
+The zero-based offset, in seconds, to where the clip starts in the video (VOD) or stream. This can be None if the parent no longer exists
+
+TYPE
+Optional[int]
+
+CustomReward
+class twitchio.CustomReward(http: TwitchHTTP, obj: dict, channel: PartialUser)
+Attributes
+background_color
+cooldown
+cooldown_until
+cost
+enabled
+id
+image
+in_stock
+input_required
+max_per_stream
+max_per_user_stream
+paused
+prompt
+redemptions_current_stream
+redemptions_skip_queue
+title
+Methods
+asyncdelete
+asyncedit
+asyncget_redemptions
+Represents a Custom Reward object, as given by the api. Use get_custom_rewards() to fetch these
+
+id
+The id of the custom reward
+
+TYPE
+str
+
+title
+The title of the custom reward
+
+TYPE
+str
+
+image
+The url of the image of the custom reward
+
+TYPE
+str
+
+background_color
+The background color of the custom reward
+
+TYPE
+str
+
+enabled
+Whether the custom reward is enabled
+
+TYPE
+bool
+
+cost
+The cost of the custom reward
+
+TYPE
+int
+
+prompt
+The prompt of the custom reward
+
+TYPE
+str
+
+input_required
+Whether the custom reward requires input
+
+TYPE
+bool
+
+max_per_stream
+Whether the custom reward is limited to a certain amount per stream, and how many
+
+TYPE
+Tuple[bool, int]
+
+max_per_user_stream
+Whether the custom reward is limited to a certain amount per user per stream, and how many
+
+TYPE
+Tuple[bool, int]
+
+cooldown
+Whether the custom reward has a cooldown, and how long it is
+
+TYPE
+Tuple[bool, int]
+
+paused
+Whether the custom reward is paused
+
+TYPE
+bool
+
+in_stock
+Whether the custom reward is in stock
+
+TYPE
+bool
+
+redemptions_skip_queue
+Whether the custom reward’s redemptions skip the request queue
+
+TYPE
+bool
+
+redemptions_current_stream
+Whether the custom reward’s redemptions are only valid for the current stream
+
+TYPE
+bool
+
+cooldown_until
+The datetime the custom reward’s cooldown will expire
+
+TYPE
+datetime.datetime
+
+coroutine delete(token: str)
+Deletes the custom reward
+
+PARAMETERS
+token – str the oauth token of the target channel
+
+RETURNS
+None
+
+coroutine edit(token: str, title: Optional[str] = None, prompt: Optional[str] = None, cost: Optional[int] = None, background_color: Optional[str] = None, enabled: Optional[bool] = None, input_required: Optional[bool] = None, max_per_stream_enabled: Optional[bool] = None, max_per_stream: Optional[int] = None, max_per_user_per_stream_enabled: Optional[bool] = None, max_per_user_per_stream: Optional[int] = None, global_cooldown_enabled: Optional[bool] = None, global_cooldown: Optional[int] = None, paused: Optional[bool] = None, redemptions_skip_queue: Optional[bool] = None)
+Edits the reward. Note that apps can only modify rewards they have made.
+
+PARAMETERS
+token (str) – The bearer token for the channel of the reward
+
+title (Optional[str]) – The new title of the reward
+
+prompt (Optional[str]) – The new prompt for the reward
+
+cost (Optional[int]) – The new cost for the reward
+
+background_color (Optional[str]) – The new background color for the reward
+
+enabled (Optional[bool]) – Whether the reward is enabled or not
+
+input_required (Optional[bool]) – Whether user input is required or not
+
+max_per_stream_enabled (Optional[bool]) – Whether the stream limit should be enabled
+
+max_per_stream (Optional[int]) – How many times this can be redeemed per stream
+
+max_per_user_per_stream_enabled (Optional[bool]) – Whether the user stream limit should be enabled
+
+max_per_user_per_stream (Optional[int]) – How many times a user can redeem this reward per stream
+
+global_cooldown_enabled (Optional[bool]) – Whether the global cooldown should be enabled
+
+global_cooldown (Optional[int]) – How many seconds the global cooldown should be
+
+paused (Optional[bool]) – Whether redemptions on this reward should be paused or not
+
+redemptions_skip_queue (Optional[bool]) – Whether redemptions skip the request queue or not
+
+RETURNS
+CustomReward itself.
+
+coroutine get_redemptions(token: str, status: str, sort: str = 'OLDEST', first: int = 20)
+Gets redemptions for this reward
+
+PARAMETERS
+token – str the oauth token of the target channel
+
+status – str one of UNFULFILLED, FULFILLED or CANCELED
+
+sort – Optional[str] the order redemptions are returned in. One of OLDEST, NEWEST. Default: OLDEST.
+
+first – int Number of results to be returned when getting the paginated Custom Reward Redemption objects for a reward. Limit: 50. Default: 20.
+
+CustomRewardRedemption
+class twitchio.CustomRewardRedemption(obj: dict, http: TwitchHTTP, parent: Optional[CustomReward])
+Methods
+asyncfulfill
+asyncrefund
+coroutine fulfill(token: str)
+marks the redemption as fulfilled
+
+PARAMETERS
+token – str the token of the target channel
+
+RETURNS
+itself.
+
+coroutine refund(token: str)
+marks the redemption as cancelled
+
+PARAMETERS
+token – str the token of the target channel
+
+RETURNS
+itself.
+
+Extension
+class twitchio.Extension(data)
+Attributes
+active
+id
+version
+Represents an extension for a specified user
+
+id
+ID of the extension.
+
+TYPE
+str
+
+version
+Version of the extension.
+
+TYPE
+str
+
+active
+Activation state of the extension, for each extension type (component, overlay, mobile, panel).
+
+TYPE
+bool
+
+ExtensionBuilder
+class twitchio.ExtensionBuilder(panels: Optional[List[Extension]] = None, overlays: Optional[List[Extension]] = None, components: Optional[List[Extension]] = None)
+Attributes
+components
+overlays
+panels
+Represents an extension to be updated for a specific user
+
+panels
+List of panels to update for an extension.
+
+TYPE
+List[Extension]
+
+overlays
+List of overlays to update for an extension.
+
+TYPE
+List[Extension]
+
+components
+List of components to update for an extension.
+
+TYPE
+List[Extension]
+
+FollowEvent
+class twitchio.FollowEvent(http: TwitchHTTP, data: dict, from_: Optional[Union[PartialUser, User]] = None, to: Optional[Union[PartialUser, User]] = None)
+Attributes
+followed_at
+from_user
+to_user
+Represents a Follow Event.
+
+from_user
+The user that followed another user.
+
+TYPE
+Union[User, PartialUser]
+
+to_user
+The user that was followed.
+
+TYPE
+Union[User, PartialUser]
+
+followed_at
+When the follow happened.
+
+TYPE
+datetime.datetime
+
+Game
+class twitchio.Game(data: dict)
+Attributes
+box_art_url
+id
+igdb_id
+name
+Methods
+defart_url
+Represents a Game on twitch
+
+id
+Game ID.
+
+TYPE
+int
+
+name
+Game name.
+
+TYPE
+str
+
+box_art_url
+Template URL for the game’s box art.
+
+TYPE
+str
+
+igdb_id
+The IGDB ID of the game. If this is not available to Twitch it will return None
+
+TYPE
+Optional[int]
+
+art_url(width: int, height: int) → str
+Adds width and height into the box art url
+
+PARAMETERS
+width (int) – The width of the image
+
+height (int) – The height of the image
+
+RETURNS
+str
+
+GlobalEmote
+class twitchio.GlobalEmote(http: TwitchHTTP, data: dict)
+Attributes
+format
+id
+images
+name
+scale
+theme_mode
+Represents a Global Emote
+
+id
+The ID of the emote.
+
+TYPE
+str
+
+name
+The name of the emote.
+
+TYPE
+str
+
+images
+Contains the image URLs for the emote. These image URLs will always provide a static (i.e., non-animated) emote image with a light background.
+
+TYPE
+dict
+
+format
+The formats that the emote is available in.
+
+TYPE
+List[str]
+
+scale
+The sizes that the emote is available in.
+
+TYPE
+List[str]
+
+theme_mode
+The background themes that the emote is available in.
+
+TYPE
+List[str]
+
+Goal
+class twitchio.Goal(http: TwitchHTTP, data: dict)
+Attributes
+broadcaster
+created_at
+current_amount
+description
+id
+target_amount
+type
+Represents a list of Goals for a broadcaster / channel
+
+id
+An ID that uniquely identifies this goal.
+
+TYPE
+str
+
+broadcaster
+User of the broadcaster.
+
+TYPE
+PartialUser
+
+type
+The type of goal. Valid values: follower, subscription, subscription_count, new_subscription and new_subscription_count.
+
+TYPE
+str
+
+description
+A description of the goal, if specified.
+
+TYPE
+str
+
+current_amount
+The current value.
+
+TYPE
+int
+
+target_amount
+Number of Bits required to vote once with Bits.
+
+TYPE
+int
+
+created_at
+Date and time of when the broadcaster created the goal.
+
+TYPE
+datetime.datetime
+
+HypeTrainContribution
+class twitchio.HypeTrainContribution(http: TwitchHTTP, data: dict)
+Attributes
+total
+type
+user
+A Contribution to a Hype Train
+
+total
+Total aggregated amount of all contributions by the top contributor. If type is BITS, total represents aggregate amount of bits used. If type is SUBS, aggregate total where 500, 1000, or 2500 represent tier 1, 2, or 3 subscriptions respectively. For example, if top contributor has gifted a tier 1, 2, and 3 subscription, total would be 4000.
+
+TYPE
+int
+
+type
+Identifies the contribution method, either BITS, SUBS or OTHER.
+
+TYPE
+str
+
+user
+The user making the contribution.
+
+TYPE
+PartialUser
+
+HypeTrainEvent
+class twitchio.HypeTrainEvent(http: TwitchHTTP, data: dict)
+Attributes
+broadcaster
+contributions_total
+cooldown_end_time
+event_id
+expiry
+goal
+id
+last_contribution
+level
+started_at
+timestamp
+top_contributions
+type
+version
+Represents a Hype Train Event (progression)
+
+id
+The ID of the event.
+
+TYPE
+str
+
+event_id
+The ID of the Hype Train.
+
+TYPE
+str
+
+type
+The type of the event. Currently only hypetrain.progression.
+
+TYPE
+str
+
+version
+The version of the endpoint.
+
+TYPE
+str
+
+broadcaster
+The user whose channel the Hype Train is occurring on.
+
+TYPE
+PartialUser
+
+timestamp
+The time the event happened at.
+
+TYPE
+datetime.datetime
+
+cooldown_end_time
+The time that another Hype Train can happen at.
+
+TYPE
+datetime.datetime
+
+expiry
+The time that this Hype Train expires at.
+
+TYPE
+datetime.datetime
+
+started_at
+The time that this Hype Train started at.
+
+TYPE
+datetime.datetime
+
+last_contribution
+The last contribution to this Hype Train.
+
+TYPE
+HypeTrainContribution
+
+level
+The level reached on this Hype Train (1-5).
+
+TYPE
+int
+
+top_contributions
+The top contributors to the Hype Train.
+
+TYPE
+List[HypeTrainContribution]
+
+contributions_total
+The total score towards completing the goal.
+
+TYPE
+int
+
+goal
+The goal for the next Hype Train level
+
+TYPE
+int
+
+Marker
+class twitchio.Marker(data: dict)
+Attributes
+created_at
+description
+id
+position
+url
+Represents a stream Marker
+
+id
+The ID of the marker.
+
+TYPE
+str
+
+created_at
+When the marker was created.
+
+TYPE
+datetime.datetime
+
+description
+The description of the marker.
+
+TYPE
+str
+
+position
+The position of the marker, in seconds.
+
+TYPE
+int
+
+url
+The url that leads to the marker.
+
+TYPE
+Optional[str]
+
+MaybeActiveExtension
+class twitchio.MaybeActiveExtension(data)
+Attributes
+can_activate
+id
+name
+types
+version
+Represents an extension for a specified user that could be may be activated
+
+id
+ID of the extension.
+
+TYPE
+str
+
+version
+Version of the extension.
+
+TYPE
+str
+
+name
+Name of the extension.
+
+TYPE
+str
+
+can_activate
+Indicates whether the extension is configured such that it can be activated.
+
+TYPE
+bool
+
+types
+Types for which the extension can be activated.
+
+TYPE
+List[str]
+
+Message
+class twitchio.Message(**kwargs)
+Attributes
+author
+channel
+content
+echo
+first
+id
+raw_data
+tags
+timestamp
+content
+The content of this message.
+
+TYPE
+str
+
+echo
+Boolean representing if this is a self-message or not.
+
+TYPE
+bool
+
+first
+Boolean representing whether it’s a first message or not.
+
+TYPE
+bool
+
+property author: Union[Chatter, PartialChatter]
+The User object associated with the Message.
+
+property channel: Channel
+The Channel object associated with the Message.
+
+property id: str
+The Message ID.
+
+property raw_data: str
+The raw data received from Twitch for this Message.
+
+property tags: dict
+The tags associated with the Message.
+
+Could be None.
+
+property timestamp: datetime
+The Twitch timestamp for this Message.
+
+RETURNS
+timestamp – UTC datetime object of the Twitch timestamp.
+
+ModEvent
+class twitchio.ModEvent(http: TwitchHTTP, data: dict, broadcaster: Union[PartialUser, User])
+Attributes
+broadcaster
+id
+timestamp
+type
+user
+version
+Represents a mod add/remove action
+
+id
+The ID of the event.
+
+TYPE
+str
+
+type
+The type of the event.
+
+TYPE
+ModEventEnum
+
+timestamp
+The timestamp of the event.
+
+TYPE
+datetime.datetime
+
+version
+The version of the endpoint.
+
+TYPE
+str
+
+broadcaster
+The user whose channel the event happened on.
+
+TYPE
+Union[PartialUser, User]
+
+user
+The user being removed or added as a moderator.
+
+TYPE
+PartialUser
+
+Poll
+class twitchio.Poll(http: TwitchHTTP, data: dict)
+Attributes
+bits_per_vote
+bits_voting_enabled
+broadcaster
+channel_points_per_vote
+channel_points_voting_enabled
+choices
+duration
+ended_at
+id
+started_at
+status
+title
+Represents a list of Polls for a broadcaster / channel
+
+Note
+
+Twitch have removed support for voting with bits. By default bits_votes, bits_voting_enabled and bits_per_vote will be received as either 0 or False.
+
+id
+ID of a poll.
+
+TYPE
+str
+
+broadcaster
+User of the broadcaster.
+
+TYPE
+PartialUser
+
+title
+Question displayed for the poll.
+
+TYPE
+str
+
+choices
+The poll choices.
+
+TYPE
+List[PollChoice]
+
+bits_voting_enabled
+Indicates if Bits can be used for voting.
+
+Warning
+
+Twitch have removed support for voting with bits. This will return as False
+
+TYPE
+bool
+
+bits_per_vote
+Number of Bits required to vote once with Bits.
+
+Warning
+
+Twitch have removed support for voting with bits. This will return as 0
+
+TYPE
+int
+
+channel_points_voting_enabled
+Indicates if Channel Points can be used for voting.
+
+TYPE
+bool
+
+channel_points_per_vote
+Number of Channel Points required to vote once with Channel Points.
+
+TYPE
+int
+
+status
+Poll status. Valid values: ACTIVE, COMPLETED, TERMINATED, ARCHIVED, MODERATED, INVALID
+
+TYPE
+str
+
+duration
+Total duration for the poll (in seconds).
+
+TYPE
+int
+
+started_at
+Date and time the poll was started.
+
+TYPE
+datetime.datetime
+
+ended_at
+Date and time the poll was ended.
+
+TYPE
+datetime.datetime
+
+class twitchio.PollChoice(data: dict)
+Attributes
+bits_votes
+channel_points_votes
+id
+title
+votes
+Represents a polls choices
+
+id
+ID for the choice.
+
+TYPE
+str
+
+title
+Text displayed for the choice.
+
+TYPE
+str
+
+votes
+Total number of votes received for the choice across all methods of voting.
+
+TYPE
+int
+
+channel_points_votes
+Number of votes received via Channel Points.
+
+TYPE
+int
+
+bits_votes
+Number of votes received via Bits.
+
+Warning
+
+Twitch have removed support for voting with bits. This will return as 0
+
+TYPE
+int
+
+Predictions
+class twitchio.Prediction(http: TwitchHTTP, data: dict)
+Attributes
+created_at
+ended_at
+locked_at
+outcomes
+prediction_id
+prediction_status
+prediction_window
+title
+user
+winning_outcome_id
+Represents channel point predictions
+
+user
+The user who is streaming.
+
+TYPE
+PartialUser
+
+prediction_id
+ID of the Prediction.
+
+TYPE
+str
+
+title
+Title for the Prediction.
+
+TYPE
+str
+
+winning_outcome_id
+ID of the winning outcome
+
+TYPE
+str
+
+outcomes
+List of possible outcomes for the Prediction.
+
+TYPE
+List[PredictionOutcome]
+
+prediction_window
+Total duration for the Prediction (in seconds).
+
+TYPE
+int
+
+prediction_status
+Status of the Prediction.
+
+TYPE
+str
+
+created_at
+Time for when the Prediction was created.
+
+TYPE
+datetime.datetime
+
+ended_at
+Time for when the Prediction ended.
+
+TYPE
+datetime.datetime
+
+locked_at
+Time for when the Prediction was locked.
+
+TYPE
+datetime.datetime
+
+class twitchio.Predictor(http: TwitchHTTP, data: dict)
+Attributes
+channel_points_used
+channel_points_won
+user
+Represents a predictor
+
+user
+The user who is streaming.
+
+TYPE
+PartialUser
+
+channel_points_used
+Number of Channel Points used by the user.
+
+TYPE
+int
+
+channel_points_won
+Number of Channel Points won by the user.
+
+TYPE
+int
+
+Raid
+class twitchio.Raid(data: dict)
+Attributes
+created_at
+is_mature
+Represents a raid for a broadcaster / channel
+
+created_at
+Date and time of when the raid started.
+
+TYPE
+datetime.datetime
+
+is_mature
+Indicates whether the stream being raided is marked as mature.
+
+TYPE
+bool
+
+Schedules
+class twitchio.Schedule(http: TwitchHTTP, data: dict)
+Attributes
+segments
+user
+vacation
+Represents a channel’s stream schedule
+
+segments
+List of segments of a channel’s stream schedule.
+
+TYPE
+List[ScheduleSegment]
+
+user
+The user of the channel associated to the schedule.
+
+TYPE
+PartialUser
+
+vacation
+Vacation details of stream schedule.
+
+TYPE
+ScheduleVacation
+
+class twitchio.ScheduleSegment(data: dict)
+Attributes
+canceled_until
+category
+end_time
+id
+is_recurring
+start_time
+title
+Represents a list segments of a channel’s stream schedule
+
+id
+The ID for the scheduled broadcast.
+
+TYPE
+str
+
+start_time
+Scheduled start time for the scheduled broadcast
+
+TYPE
+datetime.datetime
+
+end_time
+Scheduled end time for the scheduled broadcast
+
+TYPE
+Optional[datetime.datetime]
+
+title
+Title for the scheduled broadcast.
+
+TYPE
+str
+
+canceled_until
+Used with recurring scheduled broadcasts. Specifies the date of the next recurring broadcast.
+
+TYPE
+datetime.datetime
+
+category
+The game or category details for the scheduled broadcast.
+
+TYPE
+ScheduleCategory
+
+is_recurring
+Indicates if the scheduled broadcast is recurring weekly.
+
+TYPE
+bool
+
+class twitchio.ScheduleCategory(data: dict)
+Attributes
+id
+name
+Game or category details of a stream’s schedule
+
+id
+The game or category ID.
+
+TYPE
+str
+
+name
+The game or category name.
+
+TYPE
+str
+
+class twitchio.ScheduleVacation(data: dict)
+Attributes
+end_time
+start_time
+A schedule’s vacation details
+
+start_time
+Start date of stream schedule vaction.
+
+TYPE
+datetime.datetime
+
+end_time
+End date of stream schedule vaction.
+
+TYPE
+datetime.datetime
+
+SearchUser
+class twitchio.SearchUser(http: TwitchHTTP, data: dict)
+Attributes
+display_name
+game_id
+id
+live
+name
+started_at
+tag_ids
+tags
+title
+Represents a User that has been searched for.
+
+id
+The ID of the user.
+
+TYPE
+int
+
+name
+The name of the user.
+
+TYPE
+str
+
+display_name
+The broadcaster’s display name.
+
+TYPE
+str
+
+game_id
+The ID of the game that the broadcaster is playing or last played.
+
+TYPE
+str
+
+title
+The stream’s title. Is an empty string if the broadcaster didn’t set it.
+
+TYPE
+str
+
+thumbnail_url :class:`str`
+A URL to a thumbnail of the broadcaster’s profile image.
+
+language :class:`str`
+The ISO 639-1 two-letter language code of the language used by the broadcaster. For example, en for English.
+
+live
+A Boolean value that determines whether the broadcaster is streaming live. Is true if the broadcaster is streaming live; otherwise, false.
+
+TYPE
+bool
+
+started_at
+The UTC date and time of when the broadcaster started streaming.
+
+TYPE
+datetime.datetime
+
+tag_ids
+Tag IDs that apply to the stream.
+
+Warning
+
+This field will be deprecated by twitch in 2023.
+
+TYPE
+List[str]
+
+tags
+The tags applied to the channel.
+
+TYPE
+List[str]
+
+ShieldStatus
+class twitchio.ShieldStatus(http: TwitchHTTP, data: dict)
+Attributes
+display_name
+is_active
+last_activated_at
+moderator
+Represents a Shield Mode activation status.
+
+moderator
+The moderator that last activated Shield Mode.
+
+TYPE
+PartialUser
+
+display_name
+The moderator’s display name. Is an empty string if Shield Mode hasn’t been previously activated.
+
+TYPE
+str
+
+last_activated_at
+The UTC datetime of when Shield Mode was last activated. Is an empty string if Shield Mode hasn’t been previously activated.
+
+TYPE
+datetime.datetime
+
+is_active
+A Boolean value that determines whether Shield Mode is active. Is true if the broadcaster activated Shield Mode; otherwise, false.
+
+TYPE
+bool
+
+Stream
+class twitchio.Stream(http: TwitchHTTP, data: dict)
+Attributes
+game_id
+game_name
+id
+is_mature
+language
+started_at
+tag_ids
+tags
+thumbnail_url
+title
+type
+user
+viewer_count
+Represents a Stream
+
+id
+The current stream ID.
+
+TYPE
+int
+
+user
+The user who is streaming.
+
+TYPE
+PartialUser
+
+game_id
+Current game ID being played on the channel.
+
+TYPE
+int
+
+game_name
+Name of the game being played on the channel.
+
+TYPE
+str
+
+type
+Whether the stream is “live” or not.
+
+TYPE
+str
+
+title
+Title of the stream.
+
+TYPE
+str
+
+viewer_count
+Current viewer count of the stream
+
+TYPE
+int
+
+started_at
+UTC timestamp of when the stream started.
+
+TYPE
+datetime.datetime
+
+language
+Language of the channel.
+
+TYPE
+str
+
+thumbnail_url
+Thumbnail URL of the stream.
+
+TYPE
+str
+
+tag_ids
+Tag IDs that apply to the stream.
+
+Warning
+
+This field will be deprecated by twitch in 2023.
+
+TYPE
+List[str]
+
+is_mature
+Indicates whether the stream is intended for mature audience.
+
+TYPE
+bool
+
+tags
+The tags applied to the channel.
+
+TYPE
+List[str]
+
+SubscriptionEvent
+class twitchio.SubscriptionEvent(http: TwitchHTTP, data: dict, broadcaster: Optional[Union[PartialUser, User]] = None, user: Optional[Union[PartialUser, User]] = None)
+Attributes
+broadcaster
+gift
+plan_name
+tier
+user
+Represents a Subscription Event
+
+broadcaster
+The user that was subscribed to.
+
+TYPE
+Union[User, PartialUser]
+
+user
+The user who subscribed.
+
+TYPE
+Union[User, PartialUser]
+
+tier
+The tier at which the user subscribed. Could be 1, 2, or 3.
+
+TYPE
+int
+
+plan_name
+Name of the description. (twitch docs aren’t helpful, if you know what this is specifically please PR :) ).
+
+TYPE
+str
+
+gift
+Whether the subscription is a gift.
+
+TYPE
+bool
+
+Tag
+class twitchio.Tag(data: dict)
+Attributes
+auto
+id
+localization_descriptions
+localization_names
+Represents a stream tag
+
+id
+An ID that identifies the tag.
+
+TYPE
+str
+
+auto
+Indicates whether the tag is an automatic tag.
+
+TYPE
+bool
+
+localization_names
+A dictionary that contains the localized names of the tag.
+
+TYPE
+Dict[str, str]
+
+localization_descriptions
+A dictionary that contains the localized descriptions of the tag.
+
+TYPE
+str
+
+Team
+class twitchio.Team(http: TwitchHTTP, data: dict)
+Attributes
+background_image_url
+banner
+created_at
+id
+info
+team_display_name
+team_name
+thumbnail_url
+updated_at
+users
+Represents information for a specific Twitch Team
+
+users
+List of users in the specified Team.
+
+TYPE
+List[PartialUser]
+
+background_image_url
+URL for the Team background image.
+
+TYPE
+str
+
+banner
+URL for the Team banner.
+
+TYPE
+str
+
+created_at
+Date and time the Team was created.
+
+TYPE
+datetime.datetime
+
+updated_at
+Date and time the Team was last updated.
+
+TYPE
+datetime.datetime
+
+info
+Team description.
+
+TYPE
+str
+
+thumbnail_url
+Image URL for the Team logo.
+
+TYPE
+str
+
+team_name
+Team name.
+
+TYPE
+str
+
+team_display_name
+Team display name.
+
+TYPE
+str
+
+id
+Team ID.
+
+TYPE
+str
+
+Timeout
+class twitchio.Timeout(http: TwitchHTTP, data: dict)
+Attributes
+broadcaster
+created_at
+end_time
+moderator
+user
+Represents a timeout for a broadcaster / channel
+
+broadcaster
+The broadcaster whose chat room the user was timed out from chatting in.
+
+TYPE
+PartialUser
+
+moderator
+The moderator that timed the user out.
+
+TYPE
+PartialUser
+
+user
+The user that was timed out.
+
+TYPE
+PartialUser
+
+created_at
+Date and time of when the timeout was created.
+
+TYPE
+datetime.datetime
+
+end_time
+Date and time of when the timeout will end.
+
+TYPE
+datetime.datetime
+
+User
+class twitchio.PartialUser(http: TwitchHTTP, id: Union[int, str], name: Optional[str])
+Attributes
+channel
+id
+name
+Methods
+asyncadd_channel_moderator
+asyncadd_channel_vip
+asyncautomod_check
+asyncban_user
+asynccancel_raid
+asyncchat_announcement
+asynccreate_clip
+asynccreate_custom_reward
+asynccreate_marker
+asynccreate_poll
+asynccreate_prediction
+asyncdelete_chat_messages
+asyncedit
+asyncend_poll
+asyncend_prediction
+asyncfetch
+asyncfetch_active_extensions
+asyncfetch_ban_events
+asyncfetch_bans
+asyncfetch_bits_leaderboard
+asyncfetch_channel_emotes
+asyncfetch_channel_teams
+asyncfetch_channel_vips
+asyncfetch_chat_badges
+asyncfetch_chat_settings
+asyncfetch_clips
+asyncfetch_extensions
+asyncfetch_follow
+asyncfetch_followed_streams
+asyncfetch_follower_count
+asyncfetch_followers
+asyncfetch_following
+asyncfetch_following_count
+asyncfetch_goals
+asyncfetch_hypetrain_events
+asyncfetch_markers
+asyncfetch_mod_events
+asyncfetch_moderators
+asyncfetch_polls
+asyncfetch_schedule
+asyncfetch_shield_mode_status
+asyncfetch_stream_key
+asyncfetch_subscriptions
+asyncfetch_tags
+asyncfetch_videos
+asyncfollow
+asyncget_custom_rewards
+asyncget_predictions
+asyncmodify_stream
+asyncremove_channel_moderator
+asyncremove_channel_vip
+asyncreplace_tags
+asyncsend_whisper
+asyncshoutout
+asyncstart_commercial
+asyncstart_raid
+asynctimeout_user
+asyncunban_user
+asyncunfollow
+asyncupdate_chat_settings
+asyncupdate_extensions
+asyncupdate_shield_mode_status
+A class that contains minimal data about a user from the API.
+
+id
+The user’s ID.
+
+TYPE
+int
+
+name
+The user’s name. In most cases, this is provided. There are however, rare cases where it is not.
+
+TYPE
+Optional[str]
+
+coroutine add_channel_moderator(token: str, user_id: int)
+This function is a coroutine.
+
+Adds a moderator to the specified channel/broadcaster. The channel may add a maximum of 10 moderators within a 10 seconds period.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:moderators scope. Must be the broadcaster’s token.
+
+user_id (str) – The ID of the user to add as a moderator.
+
+RETURNS
+None
+
+coroutine add_channel_vip(token: str, user_id: int)
+This function is a coroutine.
+
+Adds a VIP to the specified channel/broadcaster. The channel may add a maximum of 10 VIPs within a 10 seconds period.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:vips scope. Must be the broadcaster’s token.
+
+user_id (int) – The ID of the user to add as a VIP.
+
+RETURNS
+None
+
+coroutine automod_check(token: str, query: list)
+This function is a coroutine.
+
+Checks if a string passes the automod filter
+
+PARAMETERS
+token (str) – The oauth token with the moderation:read scope.
+
+query (List[AutomodCheckMessage]) – A list of twitchio.AutomodCheckMessage
+
+RETURNS
+List[twitchio.AutomodCheckResponse]
+
+coroutine ban_user(token: str, moderator_id: int, user_id, reason: str)
+This function is a coroutine.
+
+Bans a user from the channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth user access token with the moderator:manage:banned_users scope
+
+moderator_id (int) – The ID of a user that has permission to moderate the broadcaster’s chat room. If the broadcaster wants to ban the user set this parameter to the broadcaster’s ID.
+
+user_id (int) – The ID of the user to ban.
+
+reason (str) – The reason for the ban.
+
+RETURNS
+twitchio.Ban
+
+coroutine cancel_raid(token: str)
+This function is a coroutine.
+
+Cancels a raid for the channel/broadcaster. The limit is 10 requests within a 10-minute window.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:raids scope Must be the broadcaster’s token.
+
+RETURNS
+None
+
+coroutine chat_announcement(token: str, moderator_id: int, message: str, color: Optional[str] = None)
+This function is a coroutine.
+
+Sends a chat announcement to the specified channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth token with the moderator:manage:chat_settings scope.
+
+moderator_id (int) – The ID of a user that has permission to moderate the broadcaster’s chat room. Requires moderator:manage:announcements scope.
+
+message (str) – The message to be sent.
+
+color (Optional[str]) – The color of the message. Valid values: blue, green orange, purple. The default is primary.
+
+RETURNS
+None
+
+coroutine create_clip(token: str, has_delay=False) → dict
+This function is a coroutine.
+
+Creates a clip on the channel. Note that clips are not created instantly, so you will have to query get_clips() to confirm the clip was created. Requires an OAuth token with the clips:edit scope
+
+PARAMETERS
+token (str) – the OAuth token
+
+has_delay (bool) – Whether the clip should have a delay to match that of a viewer. Defaults to False
+
+RETURNS
+dict a dictionary with id and edit_url
+
+coroutine create_custom_reward(token: str, title: str, cost: int, prompt: Optional[str] = None, enabled: Optional[bool] = True, background_color: Optional[str] = None, input_required: Optional[bool] = False, max_per_stream: Optional[int] = None, max_per_user_per_stream: Optional[int] = None, global_cooldown: Optional[int] = None, redemptions_skip_queue: Optional[bool] = False) → CustomReward
+This function is a coroutine.
+
+Creates a custom reward for the user.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:redemptions scope
+
+title (str) – The title of the reward
+
+cost (int) – The cost of the reward
+
+prompt (Optional[str]) – The prompt for the reward. Defaults to None
+
+enabled (Optional[bool]) – Whether the reward is enabled. Defaults to True
+
+background_color (Optional[str]) – The background color of the reward. Defaults to None
+
+input_required (Optional[bool]) – Whether the reward requires input. Defaults to False
+
+max_per_stream (Optional[int]) – The maximum number of times the reward can be redeemed per stream. Defaults to None
+
+max_per_user_per_stream (Optional[int]) – The maximum number of times the reward can be redeemed per user per stream. Defaults to None
+
+global_cooldown (Optional[int]) – The global cooldown of the reward. Defaults to None
+
+redemptions_skip_queue (Optional[bool]) – Whether the reward skips the queue when redeemed. Defaults to False
+
+coroutine create_marker(token: str, description: Optional[str] = None)
+This function is a coroutine.
+
+Creates a marker on the stream. This only works if the channel is live (among other conditions)
+
+PARAMETERS
+token (str) – An oauth token with the user:edit:broadcast scope
+
+description (str) – An optional description of the marker
+
+RETURNS
+twitchio.Marker
+
+coroutine create_poll(token: str, title: str, choices: List[str], duration: int, bits_voting_enabled: Optional[bool] = False, bits_per_vote: Optional[int] = None, channel_points_voting_enabled: Optional[bool] = False, channel_points_per_vote: Optional[int] = None)
+This function is a coroutine.
+
+Creates a poll for the specified channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:polls scope. User ID in token must match the broadcaster’s ID.
+
+title (str) – Question displayed for the poll.
+
+choices (List[str]) – List of choices for the poll. Must be between 2 and 5 choices.
+
+duration (int) – Total duration for the poll in seconds. Must be between 15 and 1800.
+
+bits_voting_enabled (Optional[bool]) – Indicates if Bits can be used for voting. Default is False.
+
+bits_per_vote (Optional[int]) – Number of Bits required to vote once with Bits. Max 10000.
+
+channel_points_voting_enabled (Optional[bool]) – Indicates if Channel Points can be used for voting. Default is False.
+
+channel_points_per_vote (Optional[int]) – Number of Channel Points required to vote once with Channel Points. Max 1000000.
+
+RETURNS
+List[twitchio.Poll]
+
+coroutine create_prediction(token: str, title: str, blue_outcome: str, pink_outcome: str, prediction_window: int) → Prediction
+This function is a coroutine.
+
+Creates a prediction for the channel.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:predictions scope
+
+title (str) – Title for the prediction (max of 45 characters)
+
+blue_outcome (str) – Text for the first outcome people can vote for. (max 25 characters)
+
+pink_outcome (str) – Text for the second outcome people can vote for. (max 25 characters)
+
+prediction_window (int) – Total duration for the prediction (in seconds)
+
+RETURNS
+twitchio.Prediction
+
+coroutine delete_chat_messages(token: str, moderator_id: int, message_id: Optional[str] = None)
+This function is a coroutine.
+
+Deletes a chat message, or clears chat, in the specified channel/broadcaster’s chat.
+
+PARAMETERS
+token (str) – An oauth token with the moderator:manage:chat_settings scope.
+
+moderator_id (int) – The ID of a user that has permission to moderate the broadcaster’s chat room. Requires moderator:manage:chat_messages scope.
+
+message_id (Optional[str]) – The ID of the message to be deleted. The message must have been created within the last 6 hours. The message must not belong to the broadcaster. If not specified, the request removes all messages in the broadcaster’s chat room.
+
+RETURNS
+None
+
+coroutine edit(token: str, description: str) → None
+This function is a coroutine.
+
+Edits a channels description
+
+PARAMETERS
+token (str) – An oauth token for the user with the user:edit scope
+
+description (str) – The new description for the user
+
+coroutine end_poll(token: str, poll_id: str, status: str)
+This function is a coroutine.
+
+Ends a poll for the specified channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:polls scope
+
+poll_id (str) – ID of the poll.
+
+status (str) – The poll status to be set. Valid values: TERMINATED: End the poll manually, but allow it to be viewed publicly. ARCHIVED: End the poll manually and do not allow it to be viewed publicly.
+
+RETURNS
+twitchio.Poll
+
+coroutine end_prediction(token: str, prediction_id: str, status: str, winning_outcome_id: Optional[str] = None) → Prediction
+This function is a coroutine.
+
+End a prediction with an outcome.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:predictions scope
+
+prediction_id (str) – ID of the prediction to end.
+
+status (str) – Status of the prediction. Valid values are: RESOLVED - Winning outcome has been choson and points distributed. CANCELED - Prediction canceled and points refunded LOCKED - Viewers can no longer make predictions.
+
+winning_outcome_id (Optional[str]) – ID of the winning outcome. This is required if status is RESOLVED
+
+RETURNS
+twitchio.Prediction
+
+coroutine fetch(token: Optional[str] = None, force=False) → User
+This function is a coroutine.
+
+Fetches the full user from the api or cache
+
+PARAMETERS
+token (str) – Optional OAuth token to be used instead of the bot-wide OAuth token
+
+force (bool) – Whether to force a fetch from the api or try to get from the cache first. Defaults to False
+
+RETURNS
+twitchio.User The full user associated with this PartialUser
+
+coroutine fetch_active_extensions(token: Optional[str] = None)
+This function is a coroutine.
+
+Fetches active extensions the user has. Returns a dictionary containing the following keys: panel, overlay, component.
+
+PARAMETERS
+token (Optional[str]) – An oauth token with the user:read:broadcast or user:edit:broadcast scope
+
+RETURNS
+Dict[str, Dict[int, twitchio.ActiveExtension]]
+
+coroutine fetch_ban_events(token: str, userids: Optional[List[int]] = None)
+This function is a coroutine.
+
+This has been deprecated and will be removed in a future release.
+
+Fetches ban/unban events from the User’s channel.
+
+PARAMETERS
+token (str) – The oauth token with the moderation:read scope.
+
+userids (List[int]) – An optional list of users to fetch ban/unban events for
+
+RETURNS
+List[twitchio.BanEvent]
+
+coroutine fetch_bans(token: str, userids: Optional[List[Union[str, int]]] = None) → List[UserBan]
+This function is a coroutine.
+
+Fetches a list of people the User has banned from their channel.
+
+PARAMETERS
+token (str) – The oauth token with the moderation:read scope.
+
+userids (List[Union[str, int]]) – An optional list of userids to fetch. Will fetch all bans if this is not passed
+
+coroutine fetch_bits_leaderboard(token: str, period: str = 'all', user_id: Optional[int] = None, started_at: Optional[datetime] = None) → BitsLeaderboard
+This function is a coroutine.
+
+Fetches the bits leaderboard for the channel. This requires an OAuth token with the bits:read scope.
+
+PARAMETERS
+token (str) – the OAuth token with the bits:read scope
+
+period (Optional[str]) – one of day, week, month, year, or all, defaults to all
+
+started_at (Optional[datetime.datetime]) – the timestamp to start the period at. This is ignored if the period is all
+
+user_id (Optional[int]) – the id of the user to fetch for
+
+coroutine fetch_channel_emotes()
+This function is a coroutine.
+
+Fetches channel emotes from the user
+
+RETURNS
+List[twitchio.ChannelEmote]
+
+coroutine fetch_channel_teams()
+This function is a coroutine.
+
+Fetches a list of Twitch Teams of which the specified channel/broadcaster is a member.
+
+RETURNS
+List[twitchio.ChannelTeams]
+
+coroutine fetch_channel_vips(token: str, first: int = 20, user_ids: Optional[List[int]] = None)
+This function is a coroutine.
+
+Fetches the list of VIPs for the specified channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth token with the channel:read:vips or moderator:manage:chat_settings scope. Must be the broadcaster’s token.
+
+first (Optional[int]) – The maximum number of items to return per page in the response. The minimum page size is 1 item per page and the maximum is 100. The default is 20.
+
+user_ids (Optional[List[int]]) – A list of user IDs to filter the results by. The maximum number of IDs that you may specify is 100. Ignores those users in the list that aren’t VIPs.
+
+RETURNS
+List[twitchio.PartialUser]
+
+coroutine fetch_chat_badges()
+This function is a coroutine.
+
+Fetches broadcaster’s list of custom chat badges. The list is empty if the broadcaster hasn’t created custom chat badges.
+
+Returns: List[twitchio.ChatBadge]
+
+coroutine fetch_chat_settings(token: Optional[str] = None, moderator_id: Optional[int] = None)
+This function is a coroutine.
+
+Fetches the current chat settings for this channel/broadcaster.
+
+PARAMETERS
+token (Optional[str]) – An oauth token with the moderator:read:chat_settings scope. Required if moderator_id is provided.
+
+moderator_id (Optional[int]) – The ID of a user that has permission to moderate the broadcaster’s chat room. Requires moderator:read:chat_settings scope.
+
+RETURNS
+twitchio.ChatSettings
+
+coroutine fetch_clips(started_at: Optional[datetime] = None, ended_at: Optional[datetime] = None) → List[Clip]
+This function is a coroutine.
+
+Fetches clips from the api. This will only return clips from the specified user. Use Client.fetch_clips to fetch clips by id
+
+PARAMETERS
+started_at (Optional[datetime.datetime]) – Starting date/time for returned clips. If this is specified, ended_at also should be specified; otherwise, the ended_at date/time will be 1 week after the started_at value.
+
+ended_at (Optional[datetime.datetime]) – Ending date/time for returned clips. If this is specified, started_at also must be specified; otherwise, the time period is ignored.
+
+RETURNS
+List[twitchio.Clip]
+
+coroutine fetch_extensions(token: str)
+This function is a coroutine.
+
+Fetches extensions the user has (active and inactive)
+
+PARAMETERS
+token (str) – An oauth token with the user:read:broadcast scope
+
+RETURNS
+List[twitchio.Extension]
+
+coroutine fetch_follow(to_user: PartialUser, token: Optional[str] = None)
+This function is a coroutine.
+
+Check if a user follows another user or when they followed a user.
+
+PARAMETERS
+to_user (PartialUser) –
+
+token (Optional[str]) – An oauth token to use instead of the bots token
+
+RETURNS
+twitchio.FollowEvent
+
+coroutine fetch_followed_streams(token: str)
+This function is a coroutine.
+
+Fetches a list of broadcasters that the user follows and that are streaming live.
+
+PARAMETERS
+token (str) – An oauth user token with the user:read:follows scope.
+
+RETURNS
+List[twitchio.Stream]
+
+coroutine fetch_follower_count(token: Optional[str] = None) → int
+This function is a coroutine.
+
+Fetches a list of users that are following this user.
+
+PARAMETERS
+token (Optional[str]) – An oauth token to use instead of the bots token
+
+RETURNS
+int
+
+coroutine fetch_followers(token: Optional[str] = None)
+This function is a coroutine.
+
+Fetches a list of users that are following this user.
+
+PARAMETERS
+token (Optional[str]) – An oauth token to use instead of the bots token
+
+RETURNS
+List[twitchio.FollowEvent]
+
+coroutine fetch_following(token: Optional[str] = None) → List[FollowEvent]
+This function is a coroutine.
+
+Fetches a list of users that this user is following.
+
+PARAMETERS
+token (Optional[str]) – An oauth token to use instead of the bots token
+
+RETURNS
+List[twitchio.FollowEvent]
+
+coroutine fetch_following_count(token: Optional[str] = None) → int
+This function is a coroutine.
+
+Fetches a list of users that this user is following.
+
+PARAMETERS
+token (Optional[str]) – An oauth token to use instead of the bots token
+
+RETURNS
+int
+
+coroutine fetch_goals(token: str)
+This function is a coroutine.
+
+Fetches a list of goals for the specified channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth token with the channel:read:goals scope
+
+RETURNS
+List[twitchio.Goal]
+
+coroutine fetch_hypetrain_events(id: Optional[str] = None, token: Optional[str] = None)
+This function is a coroutine.
+
+Fetches hypetrain event from the api. Needs a token with the channel:read:hype_train scope.
+
+PARAMETERS
+id (Optional[str]) – The hypetrain id, if known, to fetch for
+
+token (Optional[str]) – The oauth token to use. Will default to the one passed to the bot/client.
+
+RETURNS
+List[twitchio.HypeTrainEvent]
+
+coroutine fetch_markers(token: str, video_id: Optional[str] = None)
+This function is a coroutine.
+
+Fetches markers from the given video id, or the most recent video. The Twitch api will only return markers created by the user of the authorized token
+
+PARAMETERS
+token (str) – An oauth token with the user:edit:broadcast scope
+
+video_id (str) – A specific video o fetch from. Defaults to the most recent stream if not passed
+
+RETURNS
+Optional[twitchio.VideoMarkers]
+
+coroutine fetch_mod_events(token: str)
+This function is a coroutine.
+
+Fetches mod events (moderators being added and removed) for this channel.
+
+PARAMETERS
+token (str) – The oauth token with the moderation:read scope.
+
+RETURNS
+List[twitchio.ModEvent]
+
+coroutine fetch_moderators(token: str, userids: Optional[List[int]] = None)
+This function is a coroutine.
+
+Fetches the moderators for this channel.
+
+PARAMETERS
+token (str) – The oauth token with the moderation:read scope.
+
+userids (List[int]) – An optional list of users to check mod status of
+
+RETURNS
+List[twitchio.PartialUser]
+
+coroutine fetch_polls(token: str, poll_ids: Optional[List[str]] = None, first: Optional[int] = 20)
+This function is a coroutine.
+
+Fetches a list of polls for the specified channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth token with the channel:read:polls scope
+
+poll_ids (Optional[List[str]]) – List of poll IDs to return. Maximum: 100
+
+first (Optional[int]) – Number of polls to return. Maximum: 20. Default: 20.
+
+RETURNS
+List[twitchio.Poll]
+
+coroutine fetch_schedule(segment_ids: Optional[List[str]] = None, start_time: Optional[datetime] = None, utc_offset: Optional[int] = None, first: int = 20)
+This function is a coroutine.
+
+Fetches the schedule of a streamer :param segment_ids: List of segment IDs of the stream schedule to return. Maximum: 100 :type segment_ids: Optional[List[str]] :param start_time: A datetime object to start returning stream segments from. If not specified, the current date and time is used. :type start_time: Optional[datetime.datetime] :param utc_offset: A timezone offset for the requester specified in minutes. +4 hours from GMT would be 240 :type utc_offset: Optional[int] :param first: Maximum number of stream segments to return. Maximum: 25. Default: 20. :type first: Optional[int]
+
+RETURNS
+twitchio.Schedule
+
+coroutine fetch_shield_mode_status(token: str, moderator_id: int)
+This function is a coroutine.
+
+Fetches the user’s Shield Mode activation status.
+
+PARAMETERS
+token (str) – An oauth user token with the moderator:read:shield_mode or moderator:manage:shield_mode scope.
+
+moderator_id (int) – The ID of the broadcaster or a user that is one of the broadcaster’s moderators. This ID must match the user ID in the access token.
+
+RETURNS
+twitchio.ShieldStatus
+
+coroutine fetch_stream_key(token: str)
+This function is a coroutine.
+
+Fetches the users stream key
+
+PARAMETERS
+token (str) – The oauth token with the channel:read:stream_key scope
+
+RETURNS
+str
+
+coroutine fetch_subscriptions(token: str, userids: Optional[List[int]] = None)
+This function is a coroutine.
+
+Fetches the subscriptions for this channel.
+
+PARAMETERS
+token (str) – An oauth token with the channel:read:subscriptions scope
+
+userids (Optional[List[int]]) – An optional list of userids to look for
+
+RETURNS
+List[twitchio.SubscriptionEvent]
+
+coroutine fetch_tags()
+This function is a coroutine.
+
+Fetches tags the user currently has active.
+
+RETURNS
+List[twitchio.Tag]
+
+coroutine fetch_videos(period='all', sort='time', type='all', language=None)
+This function is a coroutine.
+
+Fetches videos that belong to the user. If you have specific video ids use Client.fetch_videos()
+
+PARAMETERS
+period (str) – The period for which to fetch videos. Valid values are all, day, week, month. Defaults to all
+
+sort (str) – Sort orders of the videos. Valid values are time, trending, views, Defaults to time
+
+type (Optional[str]) – Type of the videos to fetch. Valid values are upload, archive, highlight. Defaults to all
+
+language (Optional[str]) – Language of the videos to fetch. Must be an ISO-639-1 two letter code.
+
+RETURNS
+List[twitchio.Video]
+
+coroutine follow(userid: int, token: str, *, notifications=False)
+This function is a coroutine.
+
+Follows the user
+
+Warning
+
+This method is obsolete as Twitch removed the endpoint.
+
+PARAMETERS
+userid (int) – The user id to follow this user with
+
+token (str) – An oauth token with the user:edit:follows scope
+
+notifications (bool) – Whether to allow push notifications when this user goes live. Defaults to False
+
+coroutine get_custom_rewards(token: str, *, only_manageable=False, ids: Optional[List[int]] = None, force=False) → List[CustomReward]
+This function is a coroutine.
+
+Fetches the channels custom rewards (aka channel points) from the api.
+
+PARAMETERS
+token (str) – The users oauth token.
+
+only_manageable (bool) – Whether to fetch all rewards or only ones you can manage. Defaults to false.
+
+ids (List[int]) – An optional list of reward ids
+
+force (bool) – Whether to force a fetch or try to get from cache. Defaults to False
+
+RETURNS
+List[twitchio.CustomReward]
+
+coroutine get_predictions(token: str, prediction_id: str = None) → List[Prediction]
+This function is a coroutine.
+
+Gets information on a prediction or the list of predictions if none is provided.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:predictions scope
+
+prediction_id (str) – ID of the prediction to receive information about.
+
+RETURNS
+twitchio.Prediction
+
+coroutine modify_stream(token: str, game_id: Optional[int] = None, language: Optional[str] = None, title: Optional[str] = None)
+This function is a coroutine.
+
+Modify stream information
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:broadcast scope
+
+game_id (int) – Optional game ID being played on the channel. Use 0 to unset the game.
+
+language (str) – Optional language of the channel. A language value must be either the ISO 639-1 two-letter code for a supported stream language or “other”.
+
+title (str) – Optional title of the stream.
+
+coroutine remove_channel_moderator(token: str, user_id: int)
+This function is a coroutine.
+
+Removes a moderator from the specified channel/broadcaster. The channel may remove a maximum of 10 moderators within a 10 seconds period.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:moderators scope. Must be the broadcaster’s token.
+
+user_id (str) – The ID of the user to remove as a moderator.
+
+RETURNS
+None
+
+coroutine remove_channel_vip(token: str, user_id: int)
+This function is a coroutine.
+
+Removes a VIP from the specified channel/broadcaster. The channel may remove a maximum of 10 vips within a 10 seconds period.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:vips scope. Must be the broadcaster’s token.
+
+user_id (int) – The ID of the user to remove as a VIP.
+
+RETURNS
+None
+
+coroutine replace_tags(token: str, tags: List[Union[str, Tag]])
+This function is a coroutine.
+
+Replaces the channels active tags. Tags expire 72 hours after being applied, unless the stream is live during that time period.
+
+PARAMETERS
+token (str) – An oauth token with the user:edit:broadcast scope
+
+tags (List[Union[twitchio.Tag, str]]) – A list of twitchio.Tag or tag ids to put on the channel. Max 100
+
+coroutine send_whisper(token: str, user_id: int, message: str)
+This function is a coroutine.
+
+Sends a whisper to a user. Important Notes: - The user sending the whisper must have a verified phone number. - The API may silently drop whispers that it suspects of violating Twitch policies. - You may whisper to a maximum of 40 unique recipients per day. Within the per day limit. - You may whisper a maximum of 3 whispers per second and a maximum of 100 whispers per minute.
+
+PARAMETERS
+token (str) – An oauth user token with the user:manage:whispers scope.
+
+user_id (int) – The ID of the user to send the whisper to.
+
+message (str) – The message to send. 500 characters if the user you’re sending the message to hasn’t whispered you before. 10,000 characters if the user you’re sending the message to has whispered you before.
+
+RETURNS
+None
+
+coroutine shoutout(token: str, to_broadcaster_id: int, moderator_id: int)
+This function is a coroutine. Sends a Shoutout to the specified broadcaster. Rate Limits: The broadcaster may send a Shoutout once every 2 minutes. They may send the same broadcaster a Shoutout once every 60 minutes. Requires a user access token that includes the moderator:manage:shoutouts scope.
+
+PARAMETERS
+token (str) – An oauth user token with the moderator:manage:shoutouts scope.
+
+to_broadcaster (int) – The ID of the broadcaster that is recieving the shoutout.
+
+moderator_id (int) – The ID of the broadcaster or a user that is one of the broadcaster’s moderators. This ID must match the user ID in the access token.
+
+RETURNS
+None
+
+coroutine start_commercial(token: str, length: int) → dict
+This function is a coroutine.
+
+Starts a commercial on the channel. Requires an OAuth token with the channel:edit:commercial scope.
+
+PARAMETERS
+token (str) – the OAuth token
+
+length (int) – the length of the commercial. Should be one of 30, 60, 90, 120, 150, 180
+
+RETURNS
+dict a dictionary with length, message, and retry_after
+
+coroutine start_raid(token: str, to_broadcaster_id: int)
+This function is a coroutine.
+
+Starts a raid for the channel/broadcaster. The UTC date and time, in RFC3339 format, when the raid request was created. A Boolean value that indicates whether the channel being raided contains mature content.
+
+Rate Limit: The limit is 10 requests within a 10-minute window.
+
+PARAMETERS
+token (str) – An oauth token with the channel:manage:raids scope Must be the broadcaster’s token.
+
+to_broadcaster_id (int) – The ID of the broadcaster to raid.
+
+RETURNS
+twitchio.Raid
+
+coroutine timeout_user(token: str, moderator_id: int, user_id: int, duration: int, reason: str)
+This function is a coroutine.
+
+Timeouts a user from the channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth user access token with the moderator:manage:banned_users scope
+
+moderator_id (int) – The ID of a user that has permission to moderate the broadcaster’s chat room. If the broadcaster wants to timeout the user set this parameter to the broadcaster’s ID.
+
+user_id (int) – The ID of the user that you wish to timeout.
+
+duration (int) – The duration of the timeout in seconds. The minimum timeout is 1 second and the maximum is 1,209,600 seconds (2 weeks). To end a user’s timeout early, set this field to 1, or send an Unban user request.
+
+reason (str) – The reason for the timeout.
+
+RETURNS
+twitchio.Timeout
+
+coroutine unban_user(token: str, moderator_id: int, user_id)
+This function is a coroutine.
+
+Unbans a user or removes a timeout from the channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth user access token with the moderator:manage:banned_users scope
+
+moderator_id (int) – The ID of a user that has permission to moderate the broadcaster’s chat room. If the broadcaster wants to ban the user set this parameter to the broadcaster’s ID.
+
+user_id (int) – The ID of the user to unban.
+
+RETURNS
+None
+
+coroutine unfollow(userid: int, token: str)
+This function is a coroutine.
+
+Unfollows the user
+
+PARAMETERS
+userid (int) – The user id to unfollow this user with
+
+token (str) – An oauth token with the user:edit:follows scope
+
+coroutine update_chat_settings(token: str, moderator_id: int, emote_mode: Optional[bool] = None, follower_mode: Optional[bool] = None, follower_mode_duration: Optional[int] = None, slow_mode: Optional[bool] = None, slow_mode_wait_time: Optional[int] = None, subscriber_mode: Optional[bool] = None, unique_chat_mode: Optional[bool] = None, non_moderator_chat_delay: Optional[bool] = None, non_moderator_chat_delay_duration: Optional[int] = None)
+This function is a coroutine.
+
+Updates the current chat settings for this channel/broadcaster.
+
+PARAMETERS
+token (str) – An oauth token with the moderator:manage:chat_settings scope.
+
+moderator_id (int) – The ID of a user that has permission to moderate the broadcaster’s chat room. Requires moderator:manage:chat_settings scope.
+
+emote_mode (Optional[bool]) – A boolean to determine whether chat must contain only emotes or not.
+
+follower_mode (Optional[bool]) – A boolean to determine whether chat must contain only emotes or not.
+
+follower_mode_duration (Optional[int]) – The length of time, in minutes, that the followers must have followed the broadcaster to participate in chat. Values: 0 (no restriction) through 129600 (3 months). The default is 0.
+
+slow_mode (Optional[bool]) – A boolean to determine whether the broadcaster limits how often users in the chat room are allowed to send messages.
+
+slow_mode_wait_time (Optional[int]) – The amount of time, in seconds, that users need to wait between sending messages. Values: 3 through 120 (2 minute delay). The default is 30 seconds.
+
+subscriber_mode (Optional[bool]) – A boolean to determine whether only users that subscribe to the broadcaster’s channel can talk in chat.
+
+unique_chat_mode (Optional[bool]) – A boolean to determine whether the broadcaster requires users to post only unique messages in chat.
+
+non_moderator_chat_delay (Optional[bool]) – A boolean to determine whether the broadcaster adds a short delay before chat messages appear in chat.
+
+non_moderator_chat_delay_duration (Optional[int]) – The amount of time, in seconds, that messages are delayed from appearing in chat. Valid values: 2, 4 and 6.
+
+RETURNS
+twitchio.ChatSettings
+
+coroutine update_extensions(token: str, extensions: ExtensionBuilder)
+This function is a coroutine.
+
+Updates a users extensions. See the twitchio.ExtensionBuilder
+
+PARAMETERS
+token (str) – An oauth token with user:edit:broadcast scope
+
+extensions (twitchio.ExtensionBuilder) – A twitchio.ExtensionBuilder to be given to the twitch api
+
+RETURNS
+Dict[str, Dict[int, twitchio.ActiveExtension]]
+
+coroutine update_shield_mode_status(token: str, moderator_id: int, is_active: bool)
+This function is a coroutine.
+
+Updates the user’s Shield Mode activation status.
+
+PARAMETERS
+token (str) – An oauth user token with the moderator:read:shield_mode or moderator:manage:shield_mode scope.
+
+moderator_id (int) – The ID of the broadcaster or a user that is one of the broadcaster’s moderators. This ID must match the user ID in the access token.
+
+is_active (bool) – A Boolean value that determines whether to activate Shield Mode. Set to True to activate Shield Mode; otherwise, False to deactivate Shield Mode.
+
+RETURNS
+twitchio.ShieldStatus
+
+property channel: Optional[Channel]
+Returns the twitchio.Channel associated with this user. Could be None if you are not part of the channel’s chat
+
+RETURNS
+Optional[twitchio.Channel]
+
+class twitchio.User(http: TwitchHTTP, data: dict)
+Attributes
+broadcaster_type
+created_at
+description
+display_name
+email
+id
+name
+offline_image
+profile_image
+type
+view_count
+A full user object, containing data from the users endpoint.
+
+id
+The user’s ID
+
+TYPE
+int
+
+name
+The user’s login name
+
+TYPE
+str
+
+display_name
+The name that is displayed in twitch chat. For the most part, this is simply a change of capitalization
+
+TYPE
+str
+
+type
+The user’s type. This will normally be none, unless they are twitch staff or admin
+
+TYPE
+UserTypeEnum
+
+broadcaster_type
+What type of broacaster the user is. none, affiliate, or partner
+
+TYPE
+BroadcasterTypeEnum
+
+description
+The user’s bio
+
+TYPE
+str
+
+profile_image
+The user’s profile image URL
+
+TYPE
+str
+
+offline_image
+The user’s offline image splash URL
+
+TYPE
+str
+
+view_count
+The amount of views this channel has
+
+Warning
+
+This field has been deprecated by twitch, and is no longer updated. See here for more information.
+
+Note
+
+This field is a tuple due to a mistake when creating the models. Due to semver principals, this cannot be fixed until version 3.0 (at which time we will be removing the field entirely).
+
+TYPE
+Tuple[int]
+
+created_at
+When the user created their account
+
+TYPE
+datetime.datetime
+
+email
+The user’s email. This is only returned if you have the user:read:email scope on the token used to make the request
+
+TYPE
+Optional[class:str]
+
+UserBan
+class twitchio.UserBan(http: TwitchHTTP, data: dict)
+Attributes
+created_at
+expires_at
+id
+moderator
+name
+reason
+Represents a banned user or one in timeout.
+
+id
+The ID of the banned user.
+
+TYPE
+int
+
+name
+The name of the banned user.
+
+TYPE
+str
+
+created_at
+The date and time the ban was created.
+
+TYPE
+datetime.datetime
+
+expires_at
+The date and time the timeout will expire. Is None if it’s a ban.
+
+TYPE
+Optional[datetime.datetime]
+
+reason
+The reason for the ban/timeout.
+
+TYPE
+str
+
+moderator
+The moderator that banned the user.
+
+TYPE
+PartialUser
+
+Video
+class twitchio.Video(http: TwitchHTTP, data: dict, user: Optional[Union[PartialUser, User]] = None)
+Attributes
+created_at
+description
+duration
+id
+language
+published_at
+thumbnail_url
+title
+type
+url
+user
+view_count
+viewable
+Methods
+asyncdelete
+Represents video information
+
+id
+The ID of the video.
+
+TYPE
+int
+
+user
+User who owns the video.
+
+TYPE
+PartialUser
+
+title
+Title of the video
+
+TYPE
+str
+
+description
+Description of the video.
+
+TYPE
+str
+
+created_at
+Date when the video was created.
+
+TYPE
+datetime.datetime
+
+published_at
+Date when the video was published.
+
+TYPE
+datetime.datetime
+
+url
+URL of the video.
+
+TYPE
+str
+
+thumbnail_url
+Template URL for the thumbnail of the video.
+
+TYPE
+str
+
+viewable
+Indicates whether the video is public or private.
+
+TYPE
+str
+
+view_count
+Number of times the video has been viewed.
+
+TYPE
+int
+
+language
+Language of the video.
+
+TYPE
+str
+
+type
+The type of video.
+
+TYPE
+str
+
+duration
+Length of the video.
+
+TYPE
+str
+
+coroutine delete(token: str)
+This function is a coroutine.
+
+Deletes the video. For bulk deletion see Client.delete_videos()
+
+PARAMETERS
+token (str) – The users oauth token with the channel:manage:videos
+
+VideoMarkers
+class twitchio.VideoMarkers(data: dict)
+Attributes
+id
+markers
+Represents markers contained in a video
+
+id
+The video id.
+
+TYPE
+str
+
+markers
+The markers contained in the video.
+
+TYPE
+List[Marker]
+
+WebhookSubscription
+class twitchio.WebhookSubscription(data: dict)
